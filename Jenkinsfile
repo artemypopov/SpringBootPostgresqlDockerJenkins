@@ -10,7 +10,7 @@ pipeline {
         stage('Build') {
             steps {
                 withMaven(maven: 'MAVEN_ENV') {
-                    bat "mvn MAVEN_ARGS"
+                    bat "mvn ${MAVEN_ARGS}"
                 }
             }
         }
