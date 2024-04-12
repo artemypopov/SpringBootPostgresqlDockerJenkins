@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "book", schema = "public")
 public class Book implements Serializable {
 
     @Serial
@@ -22,23 +21,17 @@ public class Book implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "title")
     @NotNull
     private String title;
 
-    @Column(name = "isbn")
     private String isbn;
 
-    @Column(name = "descripton")
     private String description;
 
-    @Column(name = "page")
     private Integer page;
 
-    @Column(name = "price")
     private BigDecimal price;
 
 }
