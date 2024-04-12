@@ -17,7 +17,9 @@ pipeline {
 
         stage('clean container') {
             steps {
-                bat FOR /F "tokens=*" %i IN ('docker ps -a -f "name=dockerContainerName" -q') DO docker container stop %i
+               script {
+                    bat '''for /F "tokens=*" %%i IN ('docker ps -a -f "name=dockerContainerName" -q') DO (docker container stop %%i)'''
+               }
                 //bat 'docker ps -a -f name=dockerContainerName -q | foreach docker container stop $_'
                 bat 'docker ps -a -f name=dockerContainerName -q | foreach docker container rm $_'
                 bat 'docker images -q –filter=reference=dockerImageName | foreach docker rmi -f $_'
