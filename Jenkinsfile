@@ -16,9 +16,11 @@ pipeline {
         }
         stage('clean container') {
             steps {
-                bat 'docker ps -f name=${dockerContainerName} -q | xargs --no-run-if-empty docker container stop'
-                bat 'docker container ls -a -f name=${dockerContainerName} -q | xargs -r docker container rm'
-                bat 'docker images -q --filter=reference=${dockerImageName} | xargs --no-run-if-empty docker rmi -f'
+                bat '''
+                    docker ps -f name=${dockerContainerName} -q | ForEach-Object { docker container stop $_ }
+                    docker container ls -a -f name=${dockerContainerName} -q | ForEach-Object { docker container rm -f $_ }
+                    docker images -q --filter=reference=${dockerImageName} | ForEach-Object { docker rmi -f $_ }
+                '''
             }
         }
         stage('docker-compose start') {
