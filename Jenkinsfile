@@ -17,7 +17,7 @@ pipeline {
         stage('clean container') {
             steps {
                 bat '''
-                    docker ps -f name=${dockerContainerName} -q | ForEach-Object { docker container stop $_ }
+                    docker ps -f name=${dockerContainerName} -q | % { docker container stop $_ }
                     docker container ls -a -f name=${dockerContainerName} -q | ForEach-Object { docker container rm -f $_ }
                     docker images -q --filter=reference=${dockerImageName} | ForEach-Object { docker rmi -f $_ }
                 '''
