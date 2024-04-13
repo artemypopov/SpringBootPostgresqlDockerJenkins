@@ -16,10 +16,15 @@ pipeline {
         }
 
         stage('clean container') {
+//             steps {
+//                 bat "docker ps -a -f name=%dockerContainerName% -q | for /f 'tokens=*' %i in ('docker container stop $_') do @echo off & docker container stop %i"
+//                 bat "docker ps -a -f name=%dockerContainerName% -q | for /f 'tokens=*' %i in ('docker container rm $_') do @echo off & docker container rm %i"
+//                 bat "for /f 'tokens=*' %i in ('docker images -q –filter=reference=%dockerImageName%') do @echo off & docker rmi -f %i"
+//             }
             steps {
-                bat "docker ps -a -f name=%dockerContainerName% -q | for /f 'tokens=*' %i in ('docker container stop $_') do @echo off & docker container stop %i"
-                bat "docker ps -a -f name=%dockerContainerName% -q | for /f 'tokens=*' %i in ('docker container rm $_') do @echo off & docker container rm %i"
-                bat "for /f 'tokens=*' %i in ('docker images -q –filter=reference=%dockerImageName%') do @echo off & docker rmi -f %i"
+                    bat "docker ps -a -f name=%dockerContainerName% -q | for /f 'tokens=*' %%i in ('docker container stop %%i') do @echo off & docker container stop %%i"
+                    bat "docker ps -a -f name=%dockerContainerName% -q | for /f 'tokens=*' %%i in ('docker container rm %%i') do @echo off & docker container rm %%i"
+                    bat "for /f 'tokens=*' %%i in ('docker images -q –filter=reference=%dockerImageName%') do @echo off & docker rmi -f %%i"
             }
 
         }
