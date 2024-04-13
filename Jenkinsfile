@@ -16,13 +16,16 @@ pipeline {
         }
 
         stage('clean container') {
+//             steps {
+//                 sh 'docker ps -a -f name=dockerContainerName -q | foreach docker container stop $_'
+//                 sh 'docker ps -a -f name=dockerContainerName -q | foreach docker container rm $_'
+//                 sh 'docker images -q –filter=reference=dockerImageName | foreach docker rmi -f $_'
+//             }
             steps {
-               script {
-                    bat '''for /F "tokens=*" %%i IN ('docker ps -a -f "name=dockerContainerName" -q') DO (docker container stop %%i)'''
-               }
-                //bat 'docker ps -a -f name=dockerContainerName -q | foreach docker container stop $_'
-                bat 'docker ps -a -f name=dockerContainerName -q | foreach docker container rm $_'
-                bat 'docker images -q –filter=reference=dockerImageName | foreach docker rmi -f $_'
+                bat 'docker ps -a -f "name=dockerContainerName" -q > containers.txt'
+                bat 'for /f "delims=" %i in (containers.txt) do docker container stop %i'
+                bat 'for /f "delims=" %i in (containers.txt) do docker container rm %i'
+                bat 'for /f "delims=" %i in ('docker images -q –filter=reference=dockerImageName') do docker rmi -f %i' del containers.txt
             }
         }
         stage('docker-compose start') {
