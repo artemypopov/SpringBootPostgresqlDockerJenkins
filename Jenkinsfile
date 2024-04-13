@@ -21,11 +21,16 @@ pipeline {
 //                 sh 'docker ps -a -f name=dockerContainerName -q | foreach docker container rm $_'
 //                 sh 'docker images -q –filter=reference=dockerImageName | foreach docker rmi -f $_'
 //             }
+//             steps {
+//                 bat 'docker ps -a -f "name=dockerContainerName" -q > containers.txt'
+//                 bat 'for /f "delims=" %i in (containers.txt) do docker container stop %i'
+//                 bat 'for /f "delims=" %i in (containers.txt) do docker container rm %i'
+//                 bat 'for /f "delims=" %i in ('docker images -q -filter=reference=dockerImageName') do docker rmi -f %i' del containers.txt
+//             }
             steps {
                 bat 'docker ps -a -f "name=dockerContainerName" -q > containers.txt'
-                bat 'for /f "delims=" %i in (containers.txt) do docker container stop %i'
-                bat 'for /f "delims=" %i in (containers.txt) do docker container rm %i'
-                bat 'for /f "delims=" %i in ('docker images -q -filter=reference=dockerImageName') do docker rmi -f %i' del containers.txt
+                bat 'for /f "delims=" %%i in (containers.txt) do (docker container stop %%i & docker container rm %%i)'
+                bat 'for /f "delims=" %%i in ('docker images -q -f reference=dockerImageName') do docker rmi -f %%i' del containers.txt
             }
         }
         stage('docker-compose start') {
