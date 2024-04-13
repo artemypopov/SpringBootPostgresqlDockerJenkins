@@ -1,8 +1,6 @@
 # creates a layer from the openjdk:17-alpine Docker image.
 FROM openjdk:17-alpine
 
-MAINTAINER artemy.popov.dev@gmail.com
-
 # cd /app
 WORKDIR /app
 
