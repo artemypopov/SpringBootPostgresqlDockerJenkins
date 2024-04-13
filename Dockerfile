@@ -7,13 +7,13 @@ MAINTAINER artemy.popov.dev@gmail.com
 WORKDIR /app
 
 # Refer to Maven build -> finalName
-ARG JAR_FILE=target/spring-boot-docker-*.jar
+ARG JAR_FILE=target/SpringBootPostgresqlDockerJenkins-*.jar
 
-# cp target/spring-boot-docker-0.0.1-SNAPSHOT.jar /app/spring-boot-docker.jar
-COPY ${JAR_FILE} spring-boot-docker.jar
+# cp target/SpringBootPostgresqlDockerJenkins-0.0.1-SNAPSHOT.jar /app/SpringBootPostgresqlDockerJenkins.jar
+COPY ${JAR_FILE} SpringBootPostgresqlDockerJenkins.jar
 
 # java -jar /app/spring-boot-docker.jar
-CMD ["java", "-jar", "-Xmx1024M", "/app/spring-boot-docker.jar"]
+CMD ["java", "-jar", "-Xmx1024M", "/app/SpringBootPostgresqlDockerJenkins.jar"]
 
 # Make port 8090 available to the world outside this container
 EXPOSE 8090
