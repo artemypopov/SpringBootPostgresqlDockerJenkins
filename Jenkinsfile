@@ -14,15 +14,6 @@ pipeline {
                 }
             }
         }
-        stage('clean container') {
-            steps {
-                bat '''
-                    docker ps -f name=$env:dockerContainerName -q | ForEach-Object { docker container stop $_ }
-                    docker container ls -a -f name=${dockerContainerName} -q | ForEach-Object { docker container rm -f $_ }
-                    docker images -q --filter=reference=${dockerImageName} | ForEach-Object { docker rmi -f $_ }
-                '''
-            }
-        }
         stage('docker-compose start') {
             steps {
                 bat 'docker-compose up -d'
